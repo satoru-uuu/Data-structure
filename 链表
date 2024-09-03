@@ -1,0 +1,208 @@
+P28取第i个元素的值
+Status Elemdata(Linklist L;Elemtype e){
+p=L->next;int j=1;
+While(p&&j!=i){p=p->next;++j}//j++与++j有什么区别
+If(!p||j>i)printf("error")//第i个元素不存在
+e=p->data;
+Return OK;
+}
+
+P29链表的按值查找
+1、返回该元素的地址：
+Lnode* LocateElem_L(Linklist L;Elemtype e){
+p=L->next;
+While(p&&p->data!=e){p=p->next;}
+Return p;}
+2、返回该元素的位次：
+Int LocateElem_L(Linklist L;Elemtype e){
+Int j=1;p=L->next;
+While(p&&p->data!=e){p=p->next;j++)
+If(p) return j;//if(p)表示p存在，该表不为空
+Else return 0;
+}
+
+P30用链表在第i个元素之前插入一个节点
+Status ListInsert-L(Linklist &L;int i;Elemtype e){
+Lnode*p;
+p=L;j=0;
+While(p&&j<i-1){p=p->next;++j;}//寻找第i-1个节点，将p指向第i-1个节点
+If(!p||j<i-1)printf("error");//j<i-1:是当i<1时，会直接跳出循环进入判断此时j=0，因此可用来判断i是否小于一（为啥不能直接i<1?);!p是指超过最大范围
+s->next=p->next;
+p->next=s;
+Return OK;}
+
+P31删除第i个元素
+Status ListDelete(Linklist &L,Elemtype &e）{
+Lnode*p,q;
+p=L;int j=0;
+While(p->next&&j<i-1){p=p->next,j++}//找到第i-1个元素
+If(!(p->next)||j>i+1)printf("error");//i-1个指向的下一个不能为空；i不能小于等于零（当i=1，会直接跳过while和if判断，直接进行下面的删除语句。
+q=p->next;
+p->next=q->next;
+e=q->data;
+Delete q;
+Return OK;
+}
+P33单链表的建立
+1、头插法
+Void CreateList(Linklist &L,int n){
+L=(Linklist)malloc(sizeof(Lnode));
+L->next=NULL;//先建立一个带头结点的单列表。最开始只有头节点，指向空
+For(i=n;i>0;i--){
+	p=(Linklist)malloc(sizeof(Lnode));//生成新结点
+	Scanf(&p->data);//输入新节点中的数据
+	p->next=L->next;//将之前生成好的一串放到新节点的后面
+	L->next=p;
+}
+2、尾插法 
+Void  CreateList(Linklist &L,int n){
+L=(Linklist)malloc(sizeof(Lnode));
+L->next=NULL;
+Lnode*r,p;
+r=L;
+For(i=0;i<n;i++)
+	{p=(Linklist)malloc(sizeof(Lnode));
+	Scanf(&p=>data);
+	p->next=NULL;//生成的新节点，应放到最后
+	r->next=p;//插入到表尾
+	r=p;//r指向新的尾节点
+}
+
+P34循环链表概念
+好处：从任意节点出发可以找到表中的其他节点
+判断何时停止：p->next/p!=L->next/L;
+因为经常使用链表的首尾，所以用尾指针R表示单循环链表,例如找第一个元素：R->next->next
+
+P35带尾指针的循环链表的合并
+Linklist Connect(Linklist Ta,Linklist Tb){
+p=Ta->next;
+Ta->next=Tb->next->next;
+Free(Tb->next);
+Tb->next=p;
+}
+
+P36双向链表
+双向循环链表：头节点的前驱指针指向最后一个节点；最后一个节点的后继指针指向头节点
+其中查找、计算长度和单链表算法相同，插入和删除节点不同。
+
+P37，38双向链表的插入
+Status LinkInsert_Dul(DulLinklist &L,Elemtype e){     4 5 6
+If(!(p=GetElem_Dul(L,i)));  printf("error");//让指针p指向第i个位置，直接引用了之前的函数
+s=(Linklist)malloc(sizeof(Lnode));
+s->data=e;
+p->prior->next=s;
+s->prior=p->prior;
+s->next=p;
+p->prior=s;
+Return ok；
+}
+
+P39双向链表的删除操作
+Void ListDelete(Dulink &L,int I,Elemtype  &e)//删除带头结点的双向链表的第i个元素，并用e返回
+{
+If(!(Getelem(L,i))  return ERROR;
+e=p->data;
+p->prior->next=p->next;
+p->next->prior=p->prior;
+Free(p)
+Return OK;
+}
+
+P40单链表、循环链表和双向链表的时间效率比较
+                                     	     
+	查找表头结点(首元结点)		查找表尾结点	 	查找结点*P的前驱结点
+带头结点的单链表L	L->next		从L->next依次向后遍历	通过p->next无法找到其前驱
+	时间复杂度O(1)	时间复杂度O(n)
+带头结点仅设头指针L的循环单链表		L->next时间复杂度O(1)	从L->next依次向后遍历	通过p->next可以找到其前驱
+		时间复杂度O(n)	时间复杂度O(n)
+带头结点仅设尾指针R的循环单链表	R->next	R	通过p->next可以找到其前驱
+	时间复杂度O(1)	时间复杂度O(1)	时间复杂度O(n)
+带头结点的双向循	L->next	L->prior时间复杂度O(1)	p->prior时间复杂度O(1)
+环链表L	时间复杂度O(1)
+	
+	
+	
+P41顺序表和链表的比较
+		顺序表	链表
+空	存储空间	预先分配，会导致空间闲置或溢出现象	动态分配，不会出现存储空间闲置或溢出现象
+间	存储密度	不用为表示结点间的逻辑关系而增加额外的存储开销，存储密度等于1	需要借助指针来体现元素间的逻辑关系，存储密度小于1
+时	存储元素	随机存取，按位置访问元素的时间复杂度为O(1)	顺序存取，按位置访问元素时间复杂度为O(n)
+间	插入、删除	平均移动约表中一半元素，时间复杂度为O(n)	不需移动元素，确定插入、删除位置后，时间复杂度为O(1)
+适用情况		①表长变化不大，且能事先确定变化的范围	①长度变化较大
+		②很少进行插入或删除操作，经常按元素位置序号访问数据元素	②频繁进行插入或删除操作
+			
+
+
+2.动态方式：
+Typedef strcut{
+Elemtype *elem;
+Int length;}List
+List L;//L是List类型的
+L.elem=(ElemType*)malloc(sizeof(ElemType)*Maxsize)
+
+
+有序表的有序合并
+（1、用数组表示）
+
+(2、用链表表示）
+Void combine_list(linklist&la,linklist&lb,linklist&c)
+{
+Pa=la->next,pb=lb->next
+Pc=lc=la
+While(pa&&pb)
+{
+If(pa->data<pb->data){pc->next=pa;pc=pa;pa=pa->next}
+Else{}
+
+}
+Pc->next=pa?pa:pb;
+Delete pb
+
+
+}
+
+多项式的合并
+//先利用头插法或尾插法输入两个多项式
+Typedef struct{
+	Int Num1;
+	Int num2;
+	Lnode*p}Lnode;
+（尾插）void(LinkList&L,int n)
+{      L=(linklist)malloc(sizeof(Lnode))
+        Lnode*r,p;
+        r=L;
+	L->next=NULL;
+	For(i=0;i<n;i++)
+	{p=(Lnode)malloc(sizeof(Lnode));
+	Scanf(&p->data);
+	p->next=NULL;
+	r->next=p;
+	r=p;
+		}
+}
+//再将两个系数多项式合并
+Void(Lnode La,(Lnode Lb,(Lnode &Lc)
+{
+Lnode*pa,*Pb,*Pc,*r*p;
+Pa=La->next;pb=Lb->next;pc=pa;
+While(pa&&pb)
+{
+	If(pa->num2==pb->num2)
+	{	If((pa->num2+pb->num2)!=0)
+		{pa->num2+=pb->num2;
+		Pc->next=pa;pc=pa;pa=pa->next;
+		}
+		Else{delete pa,pb}
+	}
+
+
+
+
+
+
+	}
+
+Else if(pa->num2>pb->num2)
+{pc->next=pb;pc=pb;pb=pb->next;
+}
+Else{}
